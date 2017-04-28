@@ -8,6 +8,7 @@ const buildNodeTypes = require("./build-node-types")
 const buildNodeConnections = require("./build-node-connections")
 const { store, getNode } = require("../redux")
 const { boundActionCreators } = require("../redux/actions")
+const writeSchema = require("./write-schema")
 const { deleteNodes } = boundActionCreators
 
 async function buildSchema() {
@@ -27,13 +28,13 @@ async function buildSchema() {
     }),
   })
 
+  await writeSchema(schema)
+
   console.timeEnd(`building schema`)
   store.dispatch({
     type: `SET_SCHEMA`,
     payload: schema,
   })
-
-  return
 }
 
 // This seems like the most sensible way to decide when the the initial
